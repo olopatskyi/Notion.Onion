@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: P@ssw0rd
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+
+volumes:
+  mongo-data:
+
+#     networks:
+#       - app-network
+
+#   myapp:
+#     build:
+#       context: ./
+#       dockerfile: Dockerfile
+#     container_name: Notion
+#     ports:
+#       - "5000:80"
+#     depends_on:
+#       - mongo
+#     networks:
+#       - app-network
+
+# networks:
+#   app-network:
+#     driver: bridge
