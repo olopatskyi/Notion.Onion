@@ -1,5 +1,6 @@
 using AutoMapper;
 using Notion.Application.Models.Request;
+using Notion.Application.Models.Response;
 using Notion.Domain.Entities;
 
 namespace Notion.Application.Mapper;
@@ -13,10 +14,9 @@ public class ToDoListProfile : Profile
             {
                 // Map properties directly
                 dest.Title = src.Title;
-                dest.OwnerId = src.OwnerId;
 
                 // Convert IEnumerable<string> to ICollection<string>
-                dest.SharedWithUserIds = src.UserIds?.ToList();
+                dest.Contributors = src.Contributors?.ToList();
 
                 // Map ToDoItems collection using Select
                 dest.Items = src.ToDoItems?.Select(x => new ToDoItem()
@@ -26,5 +26,7 @@ public class ToDoListProfile : Profile
                     Completed = x.Completed
                 }).ToList(); // Convert IEnumerable<ToDoItem> to ICollection<ToDoItem>
             });
+
+        CreateMap<ToDoList, GetAllToDoListResponse>(MemberList.Destination);
     }
 }

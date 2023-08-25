@@ -1,4 +1,6 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
+using ExceptionHandler;
 using Notion.Application.Extensions;
 using Notion.Domain.DI;
 using Notion.WebApi.Extensions;
@@ -28,6 +30,7 @@ namespace Notion.WebApi
                 .AddOptions(Configuration)
                 .AddRepository()
                 .AddServices()
+                .AddExceptionHandlers(Assembly.GetExecutingAssembly())
                 .AddMapper();
             
             services.ConfigureBadRequestResponse();
@@ -48,7 +51,7 @@ namespace Notion.WebApi
                 });
             }
 
-            Exceptions.UseExceptionHandler(app);
+            app.UseCustomExceptionHandler();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

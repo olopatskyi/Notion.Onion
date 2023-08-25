@@ -25,14 +25,14 @@ public class ToDoListController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("{userId}")]
+    [HttpGet("{userId}/lists")]
     public async Task<IActionResult> GetAllAsync(string userId, [FromQuery] GetToDoLists model)
     {
         var lists = await _todoListService.GetAsync(userId, model);
         return Ok(lists);
     }
 
-    [HttpGet("{userId}")]
+    [HttpGet("{userId}/lists/{id}")]
     public async Task<IActionResult> GetByIdAsync(string userId, string id)
     {
         var toDoList = await _todoListService.GetByIdAsync(userId,id);

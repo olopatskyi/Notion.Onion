@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Notion.ExceptionHandler\Notion.ExceptionHandler.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Validators\" />
-  </ItemGroup>
-
 </Project>

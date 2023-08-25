@@ -22,8 +22,9 @@ public class ExceptionMiddleware
         catch (Exception e)
         {
             var handlerType = typeof(IExceptionHandler<>).MakeGenericType(e.GetType());
-            var handler = context.RequestServices.GetService(handlerType);
-            
+            var handler = context.RequestServices.GetService(handlerType) ?? context.RequestServices.GetService(
+                typeof(IExceptionHandler<>).MakeGenericType(typeof(Exception)));
+
             if (handler != null)
             {
                 var method = handler.GetType().GetMethod("ProceedAsync") ?? 
@@ -32,6 +33,7 @@ public class ExceptionMiddleware
                 var task = (Task)method.Invoke(handler, new object[]{context, e})!;
                 await task;
             }
+
         }
 
         if (response != null)
@@ -43,7 +45,7 @@ public class ExceptionMiddleware
 
 public static class Exceptions
 {
-    public static IApplicationBuilder UseExceptionHandler(this IApplicationBuilder app)
+    public static IApplicationBuilder UseCustomExceptionHandler(this IApplicationBuilder app)
     {
         return app.UseMiddleware<ExceptionMiddleware>();
     } 

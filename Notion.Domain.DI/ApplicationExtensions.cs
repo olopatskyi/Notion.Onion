@@ -12,6 +12,7 @@ public static class ApplicationExtensions
     public static IServiceCollection AddServices(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddTransient<ITodoListService, TodoListService>();
+        serviceCollection.AddTransient<ITodoItemService, TodoItemService>();
         return serviceCollection;
     }
 

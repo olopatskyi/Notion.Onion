@@ -3,6 +3,7 @@ using AutoMapper;
 using MongoDB.Bson;
 using Notion.Application.Interfaces;
 using Notion.Application.Models.Request;
+using Notion.Application.Models.Response;
 using Notion.Domain.Entities;
 using Notion.Domain.Exceptions;
 using Notion.Domain.Interface;
@@ -23,14 +24,15 @@ public class TodoListService : ITodoListService
     public async Task CreateAsync(string userId, CreateToDoList model)
     {
         var entity = _mapper.Map<ToDoList>(model);
+        entity.OwnerId = userId;
 
         await _repository.CreateAsync(entity);
     }
 
-    public async Task<IEnumerable<ToDoList>> GetAsync(string userId, GetToDoLists model)
+    public async Task<IEnumerable<GetAllToDoListResponse>> GetAsync(string userId, GetToDoLists model)
     {
         Expression<Func<ToDoList, object>> sortBy = null;
-        Expression<Func<ToDoList, bool>> filter = x => x.OwnerId == userId;
+        Expression<Func<ToDoList, bool>> filter = x => x.Contributors != null && (x.OwnerId == userId || x.Contributors.Any(id => id == userId)); 
 
         if (model.SortBy?.ToLower() == nameof(ToDoList.Title).ToLower())
         {
@@ -41,7 +43,7 @@ public class TodoListService : ITodoListService
         var toDoLists = await _repository.GetAllAsync(filter, sortBy, model.PageNumber, model.PageSize,
             model.OrderBy == OrderBy.Ascending);
 
-        return toDoLists;
+        return _mapper.Map<IEnumerable<GetAllToDoListResponse>>(toDoLists);
     }
 
     public async Task<ToDoList?> GetByIdAsync(string userId, string toDoListId)

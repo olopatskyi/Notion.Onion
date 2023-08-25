@@ -11,9 +11,4 @@
     <ProjectReference Include="..\Notion.Domain\Notion.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DataAccess\" />
-    <Folder Include="Exstensions\" />
-  </ItemGroup>
-
 </Project>

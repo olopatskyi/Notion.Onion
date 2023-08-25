@@ -6,6 +6,6 @@ public class ToDoList : BaseEntity
 
     public string OwnerId { get; set; } = null!;
     
-    public ICollection<string>? SharedWithUserIds { get; set; }
+    public ICollection<string>? Contributors { get; set; }
     
     public ICollection<ToDoItem>? Items { get; set; }}

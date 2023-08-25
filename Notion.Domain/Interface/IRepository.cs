@@ -8,7 +8,7 @@ namespace Notion.Domain.Interface
         Task CreateAsync(TEntity entity);
 
         Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter,
-            Expression<Func<TEntity, object>> sortBy,
+            Expression<Func<TEntity, object>>? sortBy,
             int pageNumber,
             int pageSize,
             bool ascending);
