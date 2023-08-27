@@ -29,6 +29,7 @@ namespace Notion.WebApi
                 .AddMongoConnection(Configuration)
                 .AddOptions(Configuration)
                 .AddRepository()
+                .AddEventHandlers()
                 .AddServices()
                 .AddExceptionHandlers(Assembly.GetExecutingAssembly())
                 .AddMapper();

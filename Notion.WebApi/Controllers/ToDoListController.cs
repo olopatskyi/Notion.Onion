@@ -5,7 +5,7 @@ using Notion.Application.Models.Request;
 namespace Notion.WebApi.Controllers;
 
 [ApiController]
-[Route("api/v1/todolist")]
+[Route("api/v1/{userId}/todolist")]
 public class ToDoListController : ControllerBase
 {
     private readonly ITodoListService _todoListService;
@@ -15,28 +15,33 @@ public class ToDoListController : ControllerBase
         _todoListService = todoListService;
     }
 
-    [HttpPost("{userId}")]
+    [HttpPost]
     public async Task<IActionResult> CreateAsync(string userId, [FromBody] CreateToDoList model)
     {
-        var ownerId = Guid.NewGuid().ToString();
-
         await _todoListService.CreateAsync(userId, model);
 
         return Ok();
     }
 
-    [HttpGet("{userId}/lists")]
+    [HttpGet]
     public async Task<IActionResult> GetAllAsync(string userId, [FromQuery] GetToDoLists model)
     {
         var lists = await _todoListService.GetAsync(userId, model);
         return Ok(lists);
     }
 
-    [HttpGet("{userId}/lists/{id}")]
-    public async Task<IActionResult> GetByIdAsync(string userId, string id)
+    [HttpGet("{listId}")]
+    public async Task<IActionResult> GetByIdAsync(string userId, string listId)
     {
-        var toDoList = await _todoListService.GetByIdAsync(userId,id);
+        var toDoList = await _todoListService.GetByIdAsync(userId,listId);
 
         return Ok(toDoList);
+    }
+
+    [HttpPost("{listId}/contributors")]
+    public async Task<IActionResult> AddContributorAsync(string userId, string listId, [FromBody] AddContributorRequest model)
+    {
+        await _todoListService.AddContributorAsync(userId, listId, model);
+        return Ok();
     }
 }

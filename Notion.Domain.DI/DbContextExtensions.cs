@@ -25,6 +25,7 @@ public static class DbContextExtensions
     public static IServiceCollection AddRepository(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        serviceCollection.AddScoped<IToDoListRepository, ToDoListRepository>();
         return serviceCollection;
     }
 }

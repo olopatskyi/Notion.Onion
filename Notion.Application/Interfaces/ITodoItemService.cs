@@ -7,4 +7,6 @@ public interface ITodoItemService
     Task CreateAsync(string userId, string toDoListId, CreateToDoItem model);
 
     Task UpdateAsync(string userId, string toDoListId, string title, UpdateToDoItem model);
+
+    Task UpdateToDoItemsAsync(string userId, string listId, List<UpdateToDoItemsRequest> model);
 }

@@ -9,24 +9,13 @@ public class ToDoListProfile : Profile
 {
     public ToDoListProfile()
     {
-        CreateMap<CreateToDoList, ToDoList>()
-            .AfterMap((src, dest) =>
-            {
-                // Map properties directly
-                dest.Title = src.Title;
+        CreateMap<CreateToDoList, ToDoList>(MemberList.Source);
 
-                // Convert IEnumerable<string> to ICollection<string>
-                dest.Contributors = src.Contributors?.ToList();
-
-                // Map ToDoItems collection using Select
-                dest.Items = src.ToDoItems?.Select(x => new ToDoItem()
-                {
-                    Title = x.Title,
-                    Description = x.Description,
-                    Completed = x.Completed
-                }).ToList(); // Convert IEnumerable<ToDoItem> to ICollection<ToDoItem>
-            });
 
         CreateMap<ToDoList, GetAllToDoListResponse>(MemberList.Destination);
+        
+        CreateMap<ToDoList, GetToDoListResponse>()
+            .ForMember(dest => dest.Items, opt =>
+                opt.MapFrom(src => src.Items));
     }
 }

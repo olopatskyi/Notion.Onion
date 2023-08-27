@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Notion.Application.EventHandlers.ToDoListEventHandler;
+using Notion.Application.Factories;
 using Notion.Application.Interfaces;
 using Notion.Application.Services;
 using Notion.Domain.Shared;
@@ -11,8 +13,8 @@ public static class ApplicationExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddTransient<ITodoListService, TodoListService>();
-        serviceCollection.AddTransient<ITodoItemService, TodoItemService>();
+        serviceCollection.AddScoped<ITodoListService, TodoListService>();
+        serviceCollection.AddScoped<ITodoItemService, TodoItemService>();
         return serviceCollection;
     }
 
@@ -25,6 +27,18 @@ public static class ApplicationExtensions
             var settings = provider.GetRequiredService<IOptions<DatabaseSettings>>();
             return settings.Value;
         });
+
+        return serviceCollection;
+    }
+
+    public static IServiceCollection AddEventHandlers(this IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddSingleton<ObserverAndHandlerFactory>(); // Register the factory
+        serviceCollection.AddSingleton(provider =>
+            provider.GetRequiredService<ObserverAndHandlerFactory>().CreateObserver()); // Create singleton observer
+        serviceCollection.AddSingleton(provider =>
+            provider.GetRequiredService<ObserverAndHandlerFactory>()
+                .CreateEventHandler()); // Create singleton event handler
 
         return serviceCollection;
     }

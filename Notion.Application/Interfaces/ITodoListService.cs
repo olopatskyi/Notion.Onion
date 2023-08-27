@@ -10,9 +10,11 @@ public interface ITodoListService
     
     Task<IEnumerable<GetAllToDoListResponse>> GetAsync(string userId, GetToDoLists model);
     
-    Task<ToDoList?> GetByIdAsync(string userId, string taskListId);
+    Task<GetToDoListResponse> GetByIdAsync(string userId, string listId);
     
     Task DeleteAsync(string userId, string toDoListId);
 
     Task UpdateAsync(string userId, UpdateToDoList model);
+
+    Task AddContributorAsync(string userId, string listId, AddContributorRequest model);
 }

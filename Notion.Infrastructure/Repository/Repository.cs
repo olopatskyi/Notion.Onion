@@ -22,7 +22,12 @@ namespace Notion.Infrastructure.Repository
             await Collection.InsertOneAsync(entity);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter,
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await Collection.Find(_ => true).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TEntity>> GetFilteredAsync(Expression<Func<TEntity, bool>> filter,
             Expression<Func<TEntity, object>>? sortBy,
             int pageNumber,
             int pageSize,
@@ -51,9 +56,14 @@ namespace Notion.Infrastructure.Repository
             return paginatedItems;
         }
 
+        public async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> condition)
+        {
+            return await Collection.Find(condition).ToListAsync();
+        }
+
         public async Task<TEntity?> GetByIdAsync(string id)
         {
-            return await Collection.Find(e => e.Id == new ObjectId(id)).FirstOrDefaultAsync();
+            return await Collection.Find(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> condition)
@@ -61,14 +71,20 @@ namespace Notion.Infrastructure.Repository
             return await Collection.Find(condition).FirstOrDefaultAsync();
         }
 
-        public async Task UpdateAsync(TEntity entity)
+        public async Task<UpdateResult> UpdateAsync(string id, UpdateDefinition<TEntity> updateDefinition)
         {
-            await Collection.ReplaceOneAsync(e => e.Id == entity.Id, entity);
+            var filter = Builders<TEntity>.Filter.Eq("_id", new ObjectId(id));
+            return await Collection.UpdateOneAsync(filter, updateDefinition);
+        }
+        
+        public async Task<UpdateResult> UpdateAsync(FilterDefinition<TEntity> filterDefinition, UpdateDefinition<TEntity> updateDefinition)
+        {
+            return await Collection.UpdateOneAsync(filterDefinition, updateDefinition);
         }
 
         public async Task DeleteAsync(string id)
         {
-            await Collection.DeleteOneAsync(e => e.Id == new ObjectId(id));
+            await Collection.DeleteOneAsync(e => e.Id == id);
         }
     }
 }
