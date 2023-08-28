@@ -3,7 +3,7 @@ namespace Notion.MigrationTool;
 
 public interface IMigration
 {
-    Task UpAsync(IMongoDatabase database);
+   Task ExecuteAsync(IMongoDatabase database);
 
-    Task DownAsync(IMongoDatabase database);
+   Task RevertAsync(IMongoDatabase database);
 }
