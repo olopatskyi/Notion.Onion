@@ -16,21 +16,21 @@ services:
 volumes:
   mongo-data:
 
-#     networks:
-#       - app-network
+    networks:
+      - app-network
 
-#   myapp:
-#     build:
-#       context: ./
-#       dockerfile: Dockerfile
-#     container_name: Notion
-#     ports:
-#       - "5000:80"
-#     depends_on:
-#       - mongo
-#     networks:
-#       - app-network
+  myapp:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: Notion
+    ports:
+      - "5000:80"
+    depends_on:
+      - mongo
+    networks:
+      - app-network
 
-# networks:
-#   app-network:
-#     driver: bridge
+networks:
+  app-network:
+    driver: bridge

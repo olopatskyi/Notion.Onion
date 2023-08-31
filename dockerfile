@@ -9,6 +9,7 @@ COPY ["Notion.Application/Notion.Application.csproj", "Notion.Application/"]
 COPY ["Notion.Infrastructure/Notion.Infrastructure.csproj", "Notion.Infrastructure/"]
 COPY ["Notion.Domain/Notion.Domain.csproj", "Notion.Domain/"]
 COPY ["Notion.WebApi/Notion.WebApi.csproj", "Notion.WebApi/"]
+COPY ["Notion.MigrationTool", "Notion.MigrationTool/"]
 COPY ["Notion.ExceptionHandler/Notion.ExceptionHandler.csproj", "Notion.ExceptionHandler/"]
 
 # Restore dependencies
