@@ -1,5 +1,3 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Notion.Application.Interfaces;
 using Notion.Application.Models.Request;
